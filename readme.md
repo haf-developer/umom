@@ -1,0 +1,1 @@
+My project for java course. Umom stands for Ultimate Master of Magic.
