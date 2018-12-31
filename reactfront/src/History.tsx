@@ -1,19 +1,30 @@
 import * as React from 'react';
 
-class History extends React.Component<props: any. any?>{
-  static moves: any;
-  constructor(props: any, moves: any?)
+
+export interface IProps {
+  move: string;
+  moveTime?: number;
+}
+
+interface IState {
+  moved?: string;
+}
+
+class History extends React.Component<IProps, IState>{
+
+  protected static move = "NO moves";
+
+  constructor(props: IProps)
   {
     super(props);
-    History.moves = "Class instance created";
   }
   
-    public render() {
+  public render(){
       return (
         <div className="History">
         History listing
         <ul>
-          <li>{History.moves;}</li>
+          <li>{History.move}</li>
           </ul>
         </div>
       );
