@@ -15,23 +15,21 @@ class Square extends React.Component{
         super(positionX, positionY);
         Square.positionX = positionX;
         Square.positionY = positionY;
-        this.handleChange = this.handleChange.bind(this);
     }
 
     public render(){
         return (
         <div className="Square">
         x y modulo = {this.props.positionX % this.props.positionY}
-        <button className="squarebutton" onClick={this.handleChange}>
+
+        <button className="squarebutton" onClick={
+            ()=>{this.props.onChange(this.props.positionX, this.props.positionY);} }>
         Test X {this.props.positionX} test Y {this.props.positionY}
-        </button>
+        </button> 
         </div>
         );
     }
 
-    private handleChange(e: any): void {
-        this.props.onChange(e.target.value);
-    }
 }
 
 export default Square;

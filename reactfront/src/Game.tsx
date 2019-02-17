@@ -4,7 +4,7 @@ import Square from './Square';
 class Game extends React.Component{
 
   public static plane: number = 0;
-
+  public static gameref: Game;
   protected static mapviewy: number = 0;
   private static mapviewx = 0;
   
@@ -30,21 +30,31 @@ class Game extends React.Component{
       this.state = {
         value: this.props.plane,
       });
+      Game.gameref = this;
   }
 
 public changestete(event: any )
 {
   Game.mapviewy++;
-  this.setState(
-    this.state = {
+  const temporaryref = Game.gameref;
+  temporaryref.setState(
+    temporaryref.state = {
       value: Game.mapviewy,
     });
 }
 
+public movetoPosition( xlocation: number, ylocation: number)
+{
+  alert( "New x=" + xlocation + ", new y=" + ylocation );
+}
+
 public render(){
     const valuestate = this.state.value;
-    const childstatechange = this.changestete.bind(this);
+    // const childstatechange = this.changestete.bind(this);
+    // const childstatechange = this.changestete;
 
+    const childstatechange = this.movetoPosition;
+    
       return (
         <div className="TheGame">
         Game running
