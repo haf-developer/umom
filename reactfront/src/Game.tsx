@@ -54,7 +54,19 @@ public render(){
     // const childstatechange = this.changestete;
 
     const childstatechange = this.movetoPosition;
-    
+    const visibleMapViewWidth = 5;
+    const visibleMapViewHeight = 5;
+    const rows = [];
+    for (let i = 0; i < visibleMapViewHeight; i++) {
+      const datacolums = [];
+      for (let j = 0; j < visibleMapViewWidth; j++) {
+        datacolums.push(<th><td key={i * visibleMapViewWidth + j}>
+          <Square positionX={j} positionY={i} onChange={childstatechange} squareData="Dirt"/>
+          </td></th>);
+        }
+        rows.push(<tr>{datacolums}</tr>);
+      }     
+
       return (
         <div className="TheGame">
         Game running
@@ -66,21 +78,7 @@ public render(){
           <li>This state {valuestate}</li>        
           </ul>
         <table>
-          <tr><th>x/y</th><th>0</th><th>1</th></tr>
-          <tr>
-            <th>y=0</th>
-            <td><Square positionX={0} positionY={valuestate} onChange={childstatechange}/>
-            </td>
-          </tr>
-          <tr>
-          <th>y=1</th>
-            <td>
-            <Square positionX={0} positionY={valuestate} onChange={childstatechange}/>
-            </td>
-            <td>
-            <Square positionX={1} positionY={valuestate + 1} onChange={childstatechange}/>
-            </td>
-          </tr>
+          {rows}
           </table>
         </div>
       );

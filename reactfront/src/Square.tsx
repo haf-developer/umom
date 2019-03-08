@@ -8,24 +8,33 @@ class Square extends React.Component{
     public props: {
         positionX: number;
         positionY: number;
+        squareData: any;
         onChange: any;
       }
     
-    constructor(positionX: number = 0, positionY: number = 0, onChange: any){
+    constructor(positionX: number = 0, positionY: number = 0, onChange: any,
+        squareData: any){
         super(positionX, positionY);
         Square.positionX = positionX;
         Square.positionY = positionY;
     }
 
     public render(){
-        return (
-        <div className="Square">
-        x y modulo = {this.props.positionX % this.props.positionY}
 
-        <button className="squarebutton" onClick={
+        const rows = [];
+        rows.push(<button className="squarebutton" onClick={
             ()=>{this.props.onChange(this.props.positionX, this.props.positionY);} }>
         Test X {this.props.positionX} test Y {this.props.positionY}
-        </button> 
+        </button>);
+
+        return (
+        <div className="Square" onClick={
+            ()=>{this.props.onChange(this.props.positionX, this.props.positionY);} }>
+        {this.props.squareData}
+        x y modulo = {this.props.positionX % this.props.positionY}
+        {
+            // rows
+            }
         </div>
         );
     }
