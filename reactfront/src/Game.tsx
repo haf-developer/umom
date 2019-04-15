@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+import MapSquareData from './MapSquareData';
 import Square from './Square';
 
 class Game extends React.Component{
@@ -22,7 +24,9 @@ class Game extends React.Component{
   public static set mapViewX(value) {
     Game.mapviewx = value;
   }
-  
+
+  private planemap: MapSquareData[][];
+
   constructor(plane: number = 0){
       super(plane);
       Game.plane = plane;
@@ -31,19 +35,19 @@ class Game extends React.Component{
         value: this.props.plane,
       });
       Game.gameref = this;
+      this.generatemap(20, 20);
   }
 
-public changestete(event: any )
-{
-  Game.mapviewy++;
-  const temporaryref = Game.gameref;
-  temporaryref.setState(
-    temporaryref.state = {
-      value: Game.mapviewy,
-    });
-}
+  public changestete(event: any ){
+    Game.mapviewy++;
+    const temporaryref = Game.gameref;
+    temporaryref.setState(
+      temporaryref.state = {
+        value: Game.mapviewy,
+      });
+  }
 
-public movetoPosition( xlocation: number, ylocation: number)
+  public movetoPosition( xlocation: number, ylocation: number)
 {
   alert( "New x=" + xlocation + ", new y=" + ylocation );
 }
@@ -61,7 +65,7 @@ public render(){
       const datacolums = [];
       for (let j = 0; j < visibleMapViewWidth; j++) {
         datacolums.push(<th><td key={i * visibleMapViewWidth + j}>
-          <Square positionX={j} positionY={i} onChange={childstatechange} squareData="Dirt"/>
+          <Square positionX={j} positionY={i} onChange={childstatechange} squareData={this.planemap[i][j].basetext}/>
           </td></th>);
         }
         rows.push(<tr>{datacolums}</tr>);
@@ -83,6 +87,26 @@ public render(){
         </div>
       );
     }
+
+    private generatemap(mapwidth: number, mapheight: number) {
+      this.planemap = new Array<[MapSquareData]>();
+      for(let ih = 0; ih < mapheight;ih++){
+        const planemaprow = new Array<MapSquareData>();
+        for(let iw = 0;iw < mapwidth;iw++){
+          const newmapdata = new MapSquareData("earth");
+          newmapdata.basepicture = "earth";
+
+          if(ih+iw > 3){
+            newmapdata.basetext = "water";
+            newmapdata.basepicture = "water";
+          }
+
+          planemaprow.push(newmapdata);  
+          }
+        this.planemap.push(planemaprow);  
+        }
+      }
+    
 }
 
 export default Game;
