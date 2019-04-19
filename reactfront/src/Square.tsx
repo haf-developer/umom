@@ -1,4 +1,5 @@
 import * as React from 'react';
+import MapSquareData from './MapSquareData';
 
 class Square extends React.Component{
 
@@ -8,12 +9,12 @@ class Square extends React.Component{
     public props: {
         positionX: number;
         positionY: number;
-        squareData: any;
+        squareData: MapSquareData;
         onChange: any;
       }
     
     constructor(positionX: number = 0, positionY: number = 0, onChange: any,
-        squareData: any){
+        squareData: MapSquareData){
         super(positionX, positionY);
         Square.positionX = positionX;
         Square.positionY = positionY;
@@ -30,7 +31,8 @@ class Square extends React.Component{
         return (
         <div className="Square" onClick={
             ()=>{this.props.onChange(this.props.positionX, this.props.positionY);} }>
-        {this.props.squareData}
+        <img src={process.env.PUBLIC_URL + "/media/" + this.props.squareData.basepicture}
+        alt={this.props.squareData.basetext} />
         x y modulo = {this.props.positionX % this.props.positionY}
         {
             // rows

@@ -65,7 +65,7 @@ public render(){
       const datacolums = [];
       for (let j = 0; j < visibleMapViewWidth; j++) {
         datacolums.push(<th><td key={i * visibleMapViewWidth + j}>
-          <Square positionX={j} positionY={i} onChange={childstatechange} squareData={this.planemap[i][j].basetext}/>
+          <Square positionX={j} positionY={i} onChange={childstatechange} squareData={this.planemap[i][j]}/>
           </td></th>);
         }
         rows.push(<tr>{datacolums}</tr>);
@@ -93,12 +93,12 @@ public render(){
       for(let ih = 0; ih < mapheight;ih++){
         const planemaprow = new Array<MapSquareData>();
         for(let iw = 0;iw < mapwidth;iw++){
-          const newmapdata = new MapSquareData("earth");
-          newmapdata.basepicture = "earth";
+          const newmapdata = new MapSquareData("ground");
+          newmapdata.basepicture = "ground.png";
 
           if(ih+iw > 3){
-            newmapdata.basetext = "water";
-            newmapdata.basepicture = "water";
+            newmapdata.basetext = "sea";
+            newmapdata.basepicture = "sea.png";
           }
 
           planemaprow.push(newmapdata);  
