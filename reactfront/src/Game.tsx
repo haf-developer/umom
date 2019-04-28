@@ -107,9 +107,9 @@ public render(){
           <li>No games</li>
           <li>X {Game.mapviewx}</li>
           <li>Y {Game.mapviewy}</li>
-          <li>This state plane</li>        
-          </ul>
-        <table>
+          <li>This state plane</li>
+          </ul>          
+          <table className="Map-view">
           {rows}
           </table>
         </div>
