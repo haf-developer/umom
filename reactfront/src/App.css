@@ -22,6 +22,127 @@
   font-size: large;
 }
 
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.Dropbuttonarmies {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.Header-menu {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.Header-menu a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.Header-menu a:hover, .Menu-dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+.Menu-dropdown{
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-armies {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-spells {
+  display: none;
+  position: absolute;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-armies a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-spells a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown-armies a:hover {
+  background-color: #ddd;
+}
+
+.Menu-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.Menu-dropdown:hover .dropdown-armies {
+  display: block;
+}
+
+.Menu-dropdown:hover .dropdown-spells {
+  display: block;
+}
+
+.Menu-dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+.Menu-dropdown:hover .Dropbuttonarmies {
+  background-color: #3e8e41;
+}
+
+.Menu-dropdown:hover .Dropbuttonspells {
+  background-color: #3e8e41;
+}
+
 .TheGame {
   table-layout: inherit;
   align-content: right;
