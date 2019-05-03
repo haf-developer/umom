@@ -1,8 +1,10 @@
 import * as React from 'react';
 
+import LinkedList from './algorithms/LinkedList';
 import GameState from './GameState';
 import MapSquareData from './MapSquareData';
 import Square from './Square';
+
 
 class Game extends React.Component{
 
@@ -55,9 +57,14 @@ class Game extends React.Component{
   mapviewstate.mapviewy = mapviewstate.mapviewy + newylocation;
   if(mapviewstate.mapviewx < 0){
     mapviewstate.mapviewx = mapviewstate.mapviewx + mapviewstate.mapwidth;
+  }else if(mapviewstate.mapviewx >= mapviewstate.mapwidth){
+    mapviewstate.mapviewx = mapviewstate.mapviewx - mapviewstate.mapwidth;
   }
+
   if(mapviewstate.mapviewy < 0){
     mapviewstate.mapviewy = mapviewstate.mapviewy + mapviewstate.mapheigth;
+  }else if(mapviewstate.mapviewy >= mapviewstate.mapheigth){
+    mapviewstate.mapviewy = mapviewstate.mapviewy - mapviewstate.mapheigth;
   }
   Game.gameref.setState(
     Game.gameref.state = {
@@ -97,7 +104,10 @@ public render(){
           </td></th>);
         }
         rows.push(<tr>{datacolums}</tr>);
-      }     
+      }
+      
+      const pathresult=new LinkedList(); // shortestPath();
+      pathresult.sortingalgorithm="No sorting";
 
       return (
         <div className="TheGame">
@@ -105,6 +115,10 @@ public render(){
         <h1>Properties for plane {this.props.plane} </h1>
         <ul>
           <li>No games</li>
+          <li>
+            <button title="Path test">Testing</button>
+          </li>
+          <li>Test path is {pathresult.sortingalgorithm}</li>
           <li>X {Game.mapviewx}</li>
           <li>Y {Game.mapviewy}</li>
           <li>This state plane</li>
@@ -124,7 +138,7 @@ public render(){
           const newmapdata = new MapSquareData("ground");
           newmapdata.basepicture = "ground.png";
 
-          if(ih+iw > 3){
+          if( Math.random() > 0.5 ){
             newmapdata.basetext = "sea";
             newmapdata.basepicture = "sea.png";
           }
