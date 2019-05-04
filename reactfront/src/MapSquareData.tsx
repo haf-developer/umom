@@ -5,6 +5,7 @@ class MapSquareData
 
     constructor(landtype: string){
     this.basetext = landtype;
+    this.basepicture = landtype + ".png";
     }
     /*
     public basemodifiers: [];
@@ -12,4 +13,11 @@ class MapSquareData
     */
 }
 
+enum TerrainTypes{
+    Sea = "sea",
+    Ground = "ground",
+    Mountain = "mountain"
+}
+
+export {TerrainTypes, MapSquareData};
 export default MapSquareData;

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import LinkedList from './algorithms/LinkedList';
 import GameState from './GameState';
-import MapSquareData from './MapSquareData';
+import * as MapSquareData from './MapSquareData';
 import Square from './Square';
 
 
@@ -28,7 +28,7 @@ class Game extends React.Component{
     Game.mapviewx = value;
   }
 
-  private planemap: MapSquareData[][];
+  private planemap: MapSquareData.MapSquareData[][];
 
   constructor(plane: number = 0){
       super(plane);
@@ -131,17 +131,15 @@ public render(){
     }
 
     private generatemap(mapwidth: number, mapheight: number) {
-      this.planemap = new Array<[MapSquareData]>();
+      this.planemap = new Array<[MapSquareData.MapSquareData]>();
       for(let ih = 0; ih < mapheight;ih++){
-        const planemaprow = new Array<MapSquareData>();
+        const planemaprow = new Array<MapSquareData.MapSquareData>();
         for(let iw = 0;iw < mapwidth;iw++){
-          const newmapdata = new MapSquareData("ground");
-          newmapdata.basepicture = "ground.png";
 
-          if( Math.random() > 0.5 ){
-            newmapdata.basetext = "sea";
-            newmapdata.basepicture = "sea.png";
-          }
+          const terraintypekey = Object.keys(MapSquareData.TerrainTypes)[Math.floor( 
+            Math.random() * Object.keys(MapSquareData.TerrainTypes).length )];
+          const newmapdata = new MapSquareData.MapSquareData(
+            MapSquareData.TerrainTypes[terraintypekey]);
 
           planemaprow.push(newmapdata);  
           }
