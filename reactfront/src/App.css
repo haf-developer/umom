@@ -167,6 +167,23 @@
   display: block;
 }
 
+.Square-data-centered {
+  position: relative;
+  margin-bottom: -23%;
+  margin-top: -22%;
+  padding: 1%;
+  border: 1%;
+  font-size: 150%;
+  text-shadow: 2px 2px 0 black, 2px -2px 0 black, -2px 2px 0 black, -2px -2px 0 black;
+  flood-color: black;
+  fill-opacity: 70%;
+  font-weight: bolder;
+  color: #808f60;
+  top: -50%;
+  left: 40%;
+  transform: translate(-40%, -80%);
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg) scale(1); }
   to { transform: rotate(360deg) scale(1.8); }

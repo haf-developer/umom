@@ -1,8 +1,13 @@
 import * as React from 'react';
 
+import { isNumber } from 'util';
+import {shortestpath} from './algorithms/Graph';
+import LinkedList from './algorithms/LinkedList';
 import GameState from './GameState';
-import MapSquareData from './MapSquareData';
+import * as MapSquareData from './MapSquareData';
 import Square from './Square';
+
+
 
 class Game extends React.Component{
 
@@ -26,7 +31,7 @@ class Game extends React.Component{
     Game.mapviewx = value;
   }
 
-  private planemap: MapSquareData[][];
+  private planemap: MapSquareData.MapSquareData[][];
 
   constructor(plane: number = 0){
       super(plane);
@@ -55,9 +60,14 @@ class Game extends React.Component{
   mapviewstate.mapviewy = mapviewstate.mapviewy + newylocation;
   if(mapviewstate.mapviewx < 0){
     mapviewstate.mapviewx = mapviewstate.mapviewx + mapviewstate.mapwidth;
+  }else if(mapviewstate.mapviewx >= mapviewstate.mapwidth){
+    mapviewstate.mapviewx = mapviewstate.mapviewx - mapviewstate.mapwidth;
   }
+
   if(mapviewstate.mapviewy < 0){
     mapviewstate.mapviewy = mapviewstate.mapviewy + mapviewstate.mapheigth;
+  }else if(mapviewstate.mapviewy >= mapviewstate.mapheigth){
+    mapviewstate.mapviewy = mapviewstate.mapviewy - mapviewstate.mapheigth;
   }
   Game.gameref.setState(
     Game.gameref.state = {
@@ -97,7 +107,22 @@ public render(){
           </td></th>);
         }
         rows.push(<tr>{datacolums}</tr>);
-      }     
+      }
+      
+      const pathresult=new LinkedList(); // shortestPath();
+      const gotpath=shortestpath(this.planemap,[0,0],[3,0]);
+      let shortpath = "and ";
+      gotpath.forEach(element => {
+        let addable = " ";
+        if(isNumber(element)){
+          addable = " num ";
+          addable = addable + element.toString();
+        }else{
+          addable = " type " + Object.values(element);
+        }
+        shortpath = shortpath + addable;
+      });
+      pathresult.sortingalgorithm="No sorting";
 
       return (
         <div className="TheGame">
@@ -105,6 +130,11 @@ public render(){
         <h1>Properties for plane {this.props.plane} </h1>
         <ul>
           <li>No games</li>
+          <li>
+            <button title="Path test">Testing</button>
+          </li>
+          <li>Test path is {pathresult.sortingalgorithm}</li>
+          <li>Samll path is {shortpath}</li>
           <li>X {Game.mapviewx}</li>
           <li>Y {Game.mapviewy}</li>
           <li>This state plane</li>
@@ -117,17 +147,15 @@ public render(){
     }
 
     private generatemap(mapwidth: number, mapheight: number) {
-      this.planemap = new Array<[MapSquareData]>();
+      this.planemap = new Array<[MapSquareData.MapSquareData]>();
       for(let ih = 0; ih < mapheight;ih++){
-        const planemaprow = new Array<MapSquareData>();
+        const planemaprow = new Array<MapSquareData.MapSquareData>();
         for(let iw = 0;iw < mapwidth;iw++){
-          const newmapdata = new MapSquareData("ground");
-          newmapdata.basepicture = "ground.png";
 
-          if(ih+iw > 3){
-            newmapdata.basetext = "sea";
-            newmapdata.basepicture = "sea.png";
-          }
+          const terraintypekey = Object.keys(MapSquareData.TerrainTypes)[Math.floor( 
+            Math.random() * Object.keys(MapSquareData.TerrainTypes).length )];
+          const newmapdata = new MapSquareData.MapSquareData(
+            MapSquareData.TerrainTypes[terraintypekey]);
 
           planemaprow.push(newmapdata);  
           }
