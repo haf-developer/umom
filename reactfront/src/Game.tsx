@@ -1,9 +1,12 @@
 import * as React from 'react';
 
+import { isNumber } from 'util';
+import {shortestpath} from './algorithms/Graph';
 import LinkedList from './algorithms/LinkedList';
 import GameState from './GameState';
 import * as MapSquareData from './MapSquareData';
 import Square from './Square';
+
 
 
 class Game extends React.Component{
@@ -107,6 +110,18 @@ public render(){
       }
       
       const pathresult=new LinkedList(); // shortestPath();
+      const gotpath=shortestpath(this.planemap,[0,0],[3,0]);
+      let shortpath = "and ";
+      gotpath.forEach(element => {
+        let addable = " ";
+        if(isNumber(element)){
+          addable = " num ";
+          addable = addable + element.toString();
+        }else{
+          addable = " type " + Object.values(element);
+        }
+        shortpath = shortpath + addable;
+      });
       pathresult.sortingalgorithm="No sorting";
 
       return (
@@ -119,6 +134,7 @@ public render(){
             <button title="Path test">Testing</button>
           </li>
           <li>Test path is {pathresult.sortingalgorithm}</li>
+          <li>Samll path is {shortpath}</li>
           <li>X {Game.mapviewx}</li>
           <li>Y {Game.mapviewy}</li>
           <li>This state plane</li>
