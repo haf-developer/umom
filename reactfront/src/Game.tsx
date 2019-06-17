@@ -15,6 +15,7 @@ class Game extends React.Component{
   public static gameref: Game;
   protected static mapviewy: number = 0;
   private static mapviewx = 0;
+  private static fromposition: number[]=[0,0];
   
   public props: {
     plane: number;
@@ -86,20 +87,20 @@ public render(){
     const rows = [];
     for (let i = 0; i < visibleMapViewHeight; i++) {
       const datacolums = [];
-      let mappointy = i + Game.mapviewy;
+      let mappointy=i + Game.mapviewy;
       if(mappointy >= this.state.mapposition.mapheigth){
-        mappointy = mappointy - this.state.mapposition.mapheigth;
+        mappointy=mappointy - this.state.mapposition.mapheigth;
       }
-      for (let j = 0; j < visibleMapViewWidth; j++) {
-        let mappointx = j + Game.mapViewX;
+      for (let j=0; j < visibleMapViewWidth; j++) {
+        let mappointx=j + Game.mapViewX;
         if(mappointx >= this.state.mapposition.mapwidth){
-          mappointx = mappointx - this.state.mapposition.mapwidth;
+          mappointx=mappointx - this.state.mapposition.mapwidth;
         }
         if(mappointy < 0){
-          mappointy = 0;
+          mappointy=0;
         }
         if(mappointx < 0){
-          mappointx = 0;
+          mappointx=0;
         }
         datacolums.push(<th><td key={i * visibleMapViewWidth + j}>
           <Square positionX={j} positionY={i} onChange={childstatechange} 
@@ -110,19 +111,31 @@ public render(){
       }
       
       const pathresult=new LinkedList(); // shortestPath();
-      const gotpath=shortestpath(this.planemap,[0,0],[3,0]);
-      let shortpath = "and ";
-      gotpath.forEach(element => {
-        let addable = " ";
-        if(isNumber(element)){
-          addable = " num ";
-          addable = addable + element.toString();
-        }else{
-          addable = " type " + Object.values(element);
-        }
-        shortpath = shortpath + addable;
-      });
+      const gotpath=shortestpath(this.planemap,[0,0],[4,2] );
+      let shortpath="";
+
+      if(undefined!==gotpath){
+        gotpath.forEach(element => {
+          let addable=" ";
+          if(isNumber(element)){
+            addable=" num ";
+            addable=addable + element.toString();
+          }else{
+            // addable = " type " + Object.values(element);
+            addable += " data " + element.getend().getnodedata();
+            addable += " weight=" + element.getweight();
+          }
+          shortpath=shortpath + addable;
+        });
+      }
       pathresult.sortingalgorithm="No sorting";
+
+      let testaction="Testing";
+      if(Game.fromposition != null){
+        testaction="From ["+Game.fromposition[0]+"]["+Game.fromposition[1]+"]";
+      }
+
+      testaction="From ["+Game.fromposition[0]+"]["+Game.fromposition[1]+"]";
 
       return (
         <div className="TheGame">
@@ -131,7 +144,9 @@ public render(){
         <ul>
           <li>No games</li>
           <li>
-            <button title="Path test">Testing</button>
+            <button title="Path test" onClick={
+              ()=>{this.pathaction();}
+            }>{testaction}</button>
           </li>
           <li>Test path is {pathresult.sortingalgorithm}</li>
           <li>Samll path is {shortpath}</li>
@@ -144,6 +159,13 @@ public render(){
           </table>
         </div>
       );
+    }
+
+    private pathaction(){
+      if(Game.fromposition !== undefined){
+        Game.fromposition[0]=Game.mapviewx;
+        Game.fromposition[1]=Game.mapviewy;
+      }
     }
 
     private generatemap(mapwidth: number, mapheight: number) {

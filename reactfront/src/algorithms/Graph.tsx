@@ -1,7 +1,9 @@
 import Graphvertex from './GraphVertex';
+import NodeEdge from './NodeEdge';
 
 class Graph{
   private Vertexes: Graphvertex[];
+  private edges: NodeEdge[];
 
   constructor(area: any[][]){
     this.Vertexes = new Array<Graphvertex>();
@@ -10,7 +12,25 @@ class Graph{
         this.Vertexes.push(new Graphvertex([xlocation,ylocation]));
       }
     }
+    this.createedges();
   }
+
+  public addedge(start: Graphvertex, end: Graphvertex, weight: number){
+    this.edges.push(new NodeEdge(start, end, weight));
+  }
+
+  public createedges(){
+    this.edges = new Array<NodeEdge>();
+  }
+
+  public getedgeweight(edge: number){
+    return this.edges[edge].getweight();
+  }
+
+  public getedges(){
+    return this.edges;
+  }
+
   public getvertexes(){
     return this.Vertexes;
   }
@@ -42,38 +62,52 @@ const getfliedpathdirection = ((areasize: number[], from: number[], to: number[]
   return [xdir, ydir];
 });
 
-const shortestpath = (area: any[][], from: number[], to: number[], ...between: number[])=>{
+interface IWeightData{
+  getweight(): number;
+}
+
+const shortestpath = (area: IWeightData[][], from: number[],
+   to: number[], ...between: number[])=>{
+     if(from===to){
+       return;
+     }
+
   const graph = new Graph(area);
-//   const path=graph.getvertexes().values;
   const path=graph.getvertexes();
 
-  const smallpath = [];
-  smallpath.push(path[0]);
-  smallpath.push(path[1]);
-  smallpath.push(path[2]);
-  const dirfrom=getfliedpathdirection([area[0].length,area.length],from,to);
-  const dirarray=new Array<number>();
-  dirarray[0]=dirfrom[0];
-  let flypathisgreater=false;
-  if(flypathisgreater){
-    smallpath.pop();   
-    if(smallpath.length < 2){
-      flypathisgreater=true;
-    }  
-}
+  // Clean code note. fliedpathdirection is problem domain (which is fantasygame).
+  const [dirx, diry]=getfliedpathdirection([area[0].length,area.length],from,to);
+  let [startx, starty]=from;
+  let [nextx,nexty]=[startx,starty];
 
-const what =() => {
-   path.pop();
-   return path.length > 0;
- }
-  
-  if(what() === true)
-  {
-    smallpath.pop();
+  if(Math.abs(dirx) >= Math.abs(diry) ){
+    const xadder=dirx/Math.abs(dirx);
+    const yadder=diry/Math.abs(dirx);
+    for(startx;startx!==to[0];startx+=xadder){
+      nexty+=yadder;
+      nextx+=xadder;
+      graph.addedge(path[starty*area[0].length+startx],
+        path[Math.floor(nexty)*area[0].length+nextx],
+        area[Math.floor(nexty)][nextx].getweight());
+      starty=Math.floor(nexty);
+    }
+  }else{
+    const yadder=diry/Math.abs(diry);
+    const xadder=dirx/Math.abs(diry);
+    for(starty;starty!==to[1];starty+=yadder){
+      nextx+=xadder;
+      nexty+=yadder;
+      graph.addedge(path[starty*area[0].length+startx],
+        path[nexty*area[0].length+Math.floor(nextx)],
+        area[nexty][Math.floor(nextx)].getweight());
+      startx=Math.floor(nextx);
+    }
   }
-  return smallpath;
+
+  const routeedges = graph.getedges();
+  return routeedges;
 }
 
-export {shortestpath};
+export {shortestpath, IWeightData};
 export default Graph;
 
