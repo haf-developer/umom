@@ -62,6 +62,19 @@ const getfliedpathdirection = ((areasize: number[], from: number[], to: number[]
   return [xdir, ydir];
 });
 
+const getzerobordercorrectedvalue= ((bordermax: number, borderedvalue: number)=>{
+  let validvalue=0;
+  if(borderedvalue>=bordermax){
+    // This doesn't work for values which are bigger than twice the bordermax
+    validvalue=borderedvalue-bordermax;
+  }else if(borderedvalue<validvalue){
+    validvalue=bordermax+borderedvalue;
+  }else{
+    validvalue=borderedvalue;
+  }
+  return validvalue;
+});
+
 interface IWeightData{
   getweight(): number;
 }
@@ -79,13 +92,18 @@ const shortestpath = (area: IWeightData[][], from: number[],
   const [dirx, diry]=getfliedpathdirection([area[0].length,area.length],from,to);
   let [startx, starty]=from;
   let [nextx,nexty]=[startx,starty];
-
+  const areawidth=area[0].length;
+  const areaheigth=area.length;
   if(Math.abs(dirx) >= Math.abs(diry) ){
     const xadder=dirx/Math.abs(dirx);
     const yadder=diry/Math.abs(dirx);
     for(startx;startx!==to[0];startx+=xadder){
       nexty+=yadder;
       nextx+=xadder;
+      startx=getzerobordercorrectedvalue(areawidth, startx);
+      nextx=getzerobordercorrectedvalue(areawidth, nextx);
+      starty=getzerobordercorrectedvalue(areaheigth, starty);
+      nexty=getzerobordercorrectedvalue(areaheigth, nexty);
       graph.addedge(path[starty*area[0].length+startx],
         path[Math.floor(nexty)*area[0].length+nextx],
         area[Math.floor(nexty)][nextx].getweight());
@@ -97,6 +115,10 @@ const shortestpath = (area: IWeightData[][], from: number[],
     for(starty;starty!==to[1];starty+=yadder){
       nextx+=xadder;
       nexty+=yadder;
+      startx=getzerobordercorrectedvalue(areawidth, startx);
+      nextx=getzerobordercorrectedvalue(areawidth, nextx);
+      starty=getzerobordercorrectedvalue(areaheigth, starty);
+      nexty=getzerobordercorrectedvalue(areaheigth, nexty);
       graph.addedge(path[starty*area[0].length+startx],
         path[nexty*area[0].length+Math.floor(nextx)],
         area[nexty][Math.floor(nextx)].getweight());

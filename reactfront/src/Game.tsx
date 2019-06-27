@@ -15,8 +15,7 @@ class Game extends React.Component{
   public static gameref: Game;
   protected static mapviewy: number = 0;
   private static mapviewx = 0;
-  private static fromposition: number[]=[0,0];
-  
+
   public props: {
     plane: number;
   }
@@ -53,7 +52,6 @@ class Game extends React.Component{
 
   public movetoPosition( xlocation: number, ylocation: number)
 {
-  // alert( "New x=" + xlocation + ", new y=" + ylocation );
   const mapviewstate = Game.gameref.state.mapposition;
   const nexxlocation = xlocation - Math.floor(mapviewstate.mapviewwidth/2);
   const newylocation = ylocation - Math.floor(mapviewstate.mapviewheigth/2);
@@ -111,7 +109,7 @@ public render(){
       }
       
       const pathresult=new LinkedList(); // shortestPath();
-      const gotpath=shortestpath(this.planemap,[0,0],[4,2] );
+      const gotpath=this.state.mapposition.getcurrentpath();
       let shortpath="";
 
       if(undefined!==gotpath){
@@ -121,7 +119,6 @@ public render(){
             addable=" num ";
             addable=addable + element.toString();
           }else{
-            // addable = " type " + Object.values(element);
             addable += " data " + element.getend().getnodedata();
             addable += " weight=" + element.getweight();
           }
@@ -130,12 +127,14 @@ public render(){
       }
       pathresult.sortingalgorithm="No sorting";
 
-      let testaction="Testing";
-      if(Game.fromposition != null){
-        testaction="From ["+Game.fromposition[0]+"]["+Game.fromposition[1]+"]";
-      }
+      let testaction="Test path";
+      const pathstart=this.state.mapposition.getcurrentpathstart();
 
-      testaction="From ["+Game.fromposition[0]+"]["+Game.fromposition[1]+"]";
+      if(pathstart[0]>=0 && pathstart[1]>=0){
+        const pathend=[Game.mapviewx, Game.mapviewy];
+        testaction="Path from ["+pathstart[0]+"]["+pathstart[1]+"]";
+        testaction+=" to ["+pathend[0]+"]["+pathend[1]+"]";
+      }
 
       return (
         <div className="TheGame">
@@ -162,10 +161,28 @@ public render(){
     }
 
     private pathaction(){
-      if(Game.fromposition !== undefined){
-        Game.fromposition[0]=Game.mapviewx;
-        Game.fromposition[1]=Game.mapviewy;
+      const mapviewstate = this.state.mapposition;
+      const validpathstart = mapviewstate.getcurrentpathstart();
+      if(validpathstart[0]<0 || validpathstart[1]<0){
+        mapviewstate.setnewpathstart([mapviewstate.mapviewx,mapviewstate.mapviewy]);
+      }else{
+        let validpathend = mapviewstate.getcurrentpathend();
+        if(validpathend[0]<0 || validpathend[1]<0){
+          validpathend=[mapviewstate.mapviewx,mapviewstate.mapviewy];
+          if((validpathend[0] !== validpathstart[0]) || (validpathend[1] !== validpathstart[1]) ){
+            mapviewstate.setnewpathend(validpathend);
+            const path=shortestpath(this.planemap, validpathstart, validpathend)
+            mapviewstate.setnewpath(path);
+            mapviewstate.setnewpathstart([-1,-1]);
+            mapviewstate.setnewpathend([-1,-1]);
+          }
+        }
       }
+      this.setState(
+        this.state = {
+          mapposition: mapviewstate,
+        }
+      );
     }
 
     private generatemap(mapwidth: number, mapheight: number) {
