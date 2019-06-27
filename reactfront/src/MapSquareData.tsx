@@ -1,4 +1,6 @@
-class MapSquareData
+import {IWeightData} from './algorithms/Graph';
+
+class MapSquareData implements IWeightData
 {
     public basetext: string;
     public basepicture: string;
@@ -11,6 +13,11 @@ class MapSquareData
     this.basetext = landtype;
     this.basepicture = landtype + ".png";
     this.movecost = TerrainMoves[landtype];
+    }
+
+    public getweight(): number {
+        return this.movecost;
+        throw new Error("Method not implemented.");
     }
 
     public requiredmoves(){
@@ -30,5 +37,9 @@ enum TerrainTypes{
     Mountain = "mountain"
 }
 
-export {TerrainTypes, MapSquareData};
+function getfunction(x: () => number) {
+    x();
+}
+
+export {TerrainTypes, MapSquareData, getfunction };
 export default MapSquareData;

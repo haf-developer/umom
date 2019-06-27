@@ -1,6 +1,7 @@
 My project for java course. Umom stands for Ultimate Master of Magic.
 
 # Getting started
+## Linux
 Following was done with Fedora 30
 ```
 sudo dnf install npm --refresh --allowerasing
@@ -20,3 +21,17 @@ And next will start server listening port 3000 (propably) and maeby even browser
 ```
 npm start
 ```
+## Windows
+TODO
+## MacOS
+No Mac possessed so currently not considered
+
+# Links
+## Algorithms
+https://github.com/jeantimex/javascript-problems-and-solutions
+
+https://github.com/trekhleb/javascript-algorithms
+
+## Graphisc
+
+https://threejs.org/

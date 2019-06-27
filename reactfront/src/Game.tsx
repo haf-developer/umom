@@ -15,7 +15,7 @@ class Game extends React.Component{
   public static gameref: Game;
   protected static mapviewy: number = 0;
   private static mapviewx = 0;
-  
+
   public props: {
     plane: number;
   }
@@ -52,7 +52,6 @@ class Game extends React.Component{
 
   public movetoPosition( xlocation: number, ylocation: number)
 {
-  // alert( "New x=" + xlocation + ", new y=" + ylocation );
   const mapviewstate = Game.gameref.state.mapposition;
   const nexxlocation = xlocation - Math.floor(mapviewstate.mapviewwidth/2);
   const newylocation = ylocation - Math.floor(mapviewstate.mapviewheigth/2);
@@ -86,20 +85,20 @@ public render(){
     const rows = [];
     for (let i = 0; i < visibleMapViewHeight; i++) {
       const datacolums = [];
-      let mappointy = i + Game.mapviewy;
+      let mappointy=i + Game.mapviewy;
       if(mappointy >= this.state.mapposition.mapheigth){
-        mappointy = mappointy - this.state.mapposition.mapheigth;
+        mappointy=mappointy - this.state.mapposition.mapheigth;
       }
-      for (let j = 0; j < visibleMapViewWidth; j++) {
-        let mappointx = j + Game.mapViewX;
+      for (let j=0; j < visibleMapViewWidth; j++) {
+        let mappointx=j + Game.mapViewX;
         if(mappointx >= this.state.mapposition.mapwidth){
-          mappointx = mappointx - this.state.mapposition.mapwidth;
+          mappointx=mappointx - this.state.mapposition.mapwidth;
         }
         if(mappointy < 0){
-          mappointy = 0;
+          mappointy=0;
         }
         if(mappointx < 0){
-          mappointx = 0;
+          mappointx=0;
         }
         datacolums.push(<th><td key={i * visibleMapViewWidth + j}>
           <Square positionX={j} positionY={i} onChange={childstatechange} 
@@ -110,19 +109,32 @@ public render(){
       }
       
       const pathresult=new LinkedList(); // shortestPath();
-      const gotpath=shortestpath(this.planemap,[0,0],[3,0]);
-      let shortpath = "and ";
-      gotpath.forEach(element => {
-        let addable = " ";
-        if(isNumber(element)){
-          addable = " num ";
-          addable = addable + element.toString();
-        }else{
-          addable = " type " + Object.values(element);
-        }
-        shortpath = shortpath + addable;
-      });
+      const gotpath=this.state.mapposition.getcurrentpath();
+      let shortpath="";
+
+      if(undefined!==gotpath){
+        gotpath.forEach(element => {
+          let addable=" ";
+          if(isNumber(element)){
+            addable=" num ";
+            addable=addable + element.toString();
+          }else{
+            addable += " data " + element.getend().getnodedata();
+            addable += " weight=" + element.getweight();
+          }
+          shortpath=shortpath + addable;
+        });
+      }
       pathresult.sortingalgorithm="No sorting";
+
+      let testaction="Test path";
+      const pathstart=this.state.mapposition.getcurrentpathstart();
+
+      if(pathstart[0]>=0 && pathstart[1]>=0){
+        const pathend=[Game.mapviewx, Game.mapviewy];
+        testaction="Path from ["+pathstart[0]+"]["+pathstart[1]+"]";
+        testaction+=" to ["+pathend[0]+"]["+pathend[1]+"]";
+      }
 
       return (
         <div className="TheGame">
@@ -131,7 +143,9 @@ public render(){
         <ul>
           <li>No games</li>
           <li>
-            <button title="Path test">Testing</button>
+            <button title="Path test" onClick={
+              ()=>{this.pathaction();}
+            }>{testaction}</button>
           </li>
           <li>Test path is {pathresult.sortingalgorithm}</li>
           <li>Samll path is {shortpath}</li>
@@ -143,6 +157,31 @@ public render(){
           {rows}
           </table>
         </div>
+      );
+    }
+
+    private pathaction(){
+      const mapviewstate = this.state.mapposition;
+      const validpathstart = mapviewstate.getcurrentpathstart();
+      if(validpathstart[0]<0 || validpathstart[1]<0){
+        mapviewstate.setnewpathstart([mapviewstate.mapviewx,mapviewstate.mapviewy]);
+      }else{
+        let validpathend = mapviewstate.getcurrentpathend();
+        if(validpathend[0]<0 || validpathend[1]<0){
+          validpathend=[mapviewstate.mapviewx,mapviewstate.mapviewy];
+          if((validpathend[0] !== validpathstart[0]) || (validpathend[1] !== validpathstart[1]) ){
+            mapviewstate.setnewpathend(validpathend);
+            const path=shortestpath(this.planemap, validpathstart, validpathend)
+            mapviewstate.setnewpath(path);
+            mapviewstate.setnewpathstart([-1,-1]);
+            mapviewstate.setnewpathend([-1,-1]);
+          }
+        }
+      }
+      this.setState(
+        this.state = {
+          mapposition: mapviewstate,
+        }
       );
     }
 
