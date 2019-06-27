@@ -35,3 +35,11 @@ https://github.com/trekhleb/javascript-algorithms
 ## Graphisc
 
 https://threejs.org/
+
+## Typescript game engines
+Bigger listing
+https://github.com/topics/game-engine?l=typescript
+
+Excalibur https://github.com/excaliburjs/Excalibur
+
+Phaser https://github.com/photonstorm/phaser
