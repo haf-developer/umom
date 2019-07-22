@@ -5,9 +5,9 @@ import {shortestpath} from './algorithms/Graph';
 import LinkedList from './algorithms/LinkedList';
 import GameState from './GameState';
 import * as MapSquareData from './MapSquareData';
-import Square from './Square';
-
-
+import CityView from './views/CityView';
+import MapView from './views/MapView';
+import SpellsView from './views/SpellsView';
 
 class Game extends React.Component{
 
@@ -82,31 +82,6 @@ public render(){
     const childstatechange = this.movetoPosition;
     const visibleMapViewWidth = this.state.mapposition.mapviewwidth;
     const visibleMapViewHeight = this.state.mapposition.mapviewheigth;
-    const rows = [];
-    for (let i = 0; i < visibleMapViewHeight; i++) {
-      const datacolums = [];
-      let mappointy=i + Game.mapviewy;
-      if(mappointy >= this.state.mapposition.mapheigth){
-        mappointy=mappointy - this.state.mapposition.mapheigth;
-      }
-      for (let j=0; j < visibleMapViewWidth; j++) {
-        let mappointx=j + Game.mapViewX;
-        if(mappointx >= this.state.mapposition.mapwidth){
-          mappointx=mappointx - this.state.mapposition.mapwidth;
-        }
-        if(mappointy < 0){
-          mappointy=0;
-        }
-        if(mappointx < 0){
-          mappointx=0;
-        }
-        datacolums.push(<th><td key={i * visibleMapViewWidth + j}>
-          <Square positionX={j} positionY={i} onChange={childstatechange} 
-          squareData={this.planemap[mappointy][mappointx]}/>
-          </td></th>);
-        }
-        rows.push(<tr>{datacolums}</tr>);
-      }
       
       const pathresult=new LinkedList(); // shortestPath();
       const gotpath=this.state.mapposition.getcurrentpath();
@@ -141,7 +116,10 @@ public render(){
         Game running
         <h1>Properties for plane {this.props.plane} </h1>
         <ul>
-          <li>No games</li>
+          <li><SpellsView location={[Game.mapviewx, Game.mapviewy]} /></li>
+          <li><CityView /></li>
+          <li className="CenteredComponent"><MapView planemap={this.planemap} location={[Game.mapviewx, Game.mapviewy]}
+          reportlocation={childstatechange} viewsize={[visibleMapViewWidth, visibleMapViewHeight]}/></li>
           <li>
             <button title="Path test" onClick={
               ()=>{this.pathaction();}
@@ -153,9 +131,6 @@ public render(){
           <li>Y {Game.mapviewy}</li>
           <li>This state plane</li>
           </ul>          
-          <table className="Map-view">
-          {rows}
-          </table>
         </div>
       );
     }
