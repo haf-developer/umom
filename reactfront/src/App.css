@@ -144,13 +144,17 @@
 }
 
 .TheGame {
-  table-layout: inherit;
-  align-content: right;
   align-items: center;
 }
 
+.CenteredComponent {
+  text-align: left;
+  align-items: right;
+}
+
 .Map-view {
-  padding: 0px;
+  position: center;
+  padding: 100px;
   border-collapse: collapse;
   border: 1vw double burlywood;
   background-color: darkgoldenrod;

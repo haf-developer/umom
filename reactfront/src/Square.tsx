@@ -30,12 +30,11 @@ class Square extends React.Component{
 
         return (
         <div className="Square" onClick={
-            ()=>{this.props.onChange(this.props.positionX, this.props.positionY);} }>
+            ()=>{this.props.onChange([this.props.positionX, this.props.positionY]);} }>
         <img className="Map-view-image" src={process.env.PUBLIC_URL + "/media/" + this.props.squareData.basepicture}
         alt={this.props.squareData.basetext} />
         <div className="Square-data-centered">
         {
-        // x y modulo = {this.props.positionX % this.props.positionY}
         this.props.squareData.requiredmoves()
         }
         </div>
