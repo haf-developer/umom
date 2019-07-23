@@ -51,8 +51,9 @@ class MapView extends React.Component<IViewProps>{
         const mapcells=this.getmapsquorestable();
 
         return(
-            <div className="MapView">
-                <table className="Map-view">
+            <div style={{textAlign: 'center', backgroundColor: 'blue', borderStyle: 'solid'}}
+             className="MapView">
+                <table style={{marginLeft: '5%', alignSelf: 'right'}} className="Map-view">
                 {mapcells}
                 </table>
                 <br />

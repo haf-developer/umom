@@ -148,13 +148,16 @@
 }
 
 .CenteredComponent {
-  text-align: left;
+  text-align: right;
   align-items: right;
+  object-position: center;
 }
 
 .Map-view {
-  position: center;
-  padding: 100px;
+  table-layout: auto;
+  transform: translateX(50%);
+  object-position: center;
+  padding: 10px;
   border-collapse: collapse;
   border: 1vw double burlywood;
   background-color: darkgoldenrod;
