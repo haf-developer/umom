@@ -43,3 +43,6 @@ https://github.com/topics/game-engine?l=typescript
 Excalibur https://github.com/excaliburjs/Excalibur
 
 Phaser https://github.com/photonstorm/phaser
+
+## For Typescript painkilling
+Check commints and bugs [React typings project](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react)
