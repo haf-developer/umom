@@ -6,22 +6,26 @@ import { Redirect,
 } from 'react-router-dom';
 import {fakeAuth} from './../App'
 
-const AuthButton = withRouter(({ history }) =>
-  fakeAuth.isAuthenticated ? (
+
+const AuthButton = withRouter(({ history }) => {
+  const signout = () => fakeAuth.signout(() => history.push("/"));
+  const signoutrender = () => (
     <div>
-      Welcome!{" "}
+      {"Welcome! "}
       <button
-        onClick={() => {
-          fakeAuth.signout(() => history.push("/"));
-        }}
+        onClick={signout}
       >
-        Sign out
+        {"Sign out"}
       </button>
     </div>
-  ) : (
-    <p>You are not logged in.</p>
+  );
+
+  return (fakeAuth.isAuthenticated)
+  ? signoutrender()
+  : (
+    <p>{"You are not logged in."}</p>
   )
-);
+});
 
 class NewLogin extends React.Component<RouteComponentProps>{
     public static location: any;
