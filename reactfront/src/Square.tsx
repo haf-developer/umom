@@ -20,17 +20,19 @@ class Square extends React.Component{
         Square.positionY = positionY;
     }
 
+    public refclick=()=>{
+        this.props.onChange(this.props.positionX, this.props.positionY)
+    };
+
     public render(){
 
         const rows = [];
-        rows.push(<button className="squarebutton" onClick={
-            ()=>{this.props.onChange(this.props.positionX, this.props.positionY);} }>
+        rows.push(<button className="squarebutton" onClick={this.refclick}>
         Test X {this.props.positionX} test Y {this.props.positionY}
         </button>);
 
         return (
-        <div className="Square" onClick={
-            ()=>{this.props.onChange([this.props.positionX, this.props.positionY]);} }>
+        <div className="Square" onClick={this.refclick}>
         <img className="Map-view-image" src={process.env.PUBLIC_URL + "/media/" + this.props.squareData.basepicture}
         alt={this.props.squareData.basetext} />
         <div className="Square-data-centered">

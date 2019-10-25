@@ -18,6 +18,9 @@ import {
 import logo from './umom_logo.svg';
 
 class App extends React.Component {
+  public gamecall=() => <Game plane={3}/>;
+  public gamecalldefault=() => <Game/>;
+
   public render() {
 
     return (
@@ -54,6 +57,7 @@ class App extends React.Component {
           <a href="#">Settings</a>
           <Link to="/aboutview/">AboutView</Link>
           <Link to="/game">Game</Link>
+          <Link to="/gamezero">Game_default_plane</Link>
           </div>
         </header>
 
@@ -62,7 +66,8 @@ class App extends React.Component {
         </p>
         <AuthButton />
         <GameHistory move="1.1.2018"/>
-        <PrivateRoute path={"/game"} component={() => <Game plane={3}/>}/>
+        <PrivateRoute path={"/game"} component={this.gamecall}/>
+        <PrivateRoute path={"/gamezero"} component={this.gamecalldefault}/>
         <Route path="/aboutview/" component={AboutView} />
         <Route path="/newlogin" component={NewLogin} />
         </Router>
@@ -78,22 +83,23 @@ interface IPrivateRouteProps extends RouteProps {
 
 const PrivateRoute = (props: IPrivateRouteProps):JSX.Element => {
   const { component: Component, ...rest } = props;
+  const returnedrender=(propsa:any)=>(
+    fakeAuth.isAuthenticated ? (
+      <Component {...props} />
+    ) : (
+      <Redirect
+        to={{
+          pathname: "/newlogin",
+          state: { from: propsa.location }
+        }}
+      />
+    )
+  )
 
   return (
     <Route
       {...rest}
-      render={propsa=>
-        fakeAuth.isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/newlogin",
-              state: { from: propsa.location }
-            }}
-          />
-        )
-      }
+      render={returnedrender}
     />
   );
 };

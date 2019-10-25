@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as MapSquareData from '../MapSquareData';
 import Square from './../Square';
 
+
 export interface IViewProps {
     planemap: MapSquareData.MapSquareData[][];
     location: number[];
@@ -47,6 +48,9 @@ class MapView extends React.Component<IViewProps>{
             });
     }
 
+    public refsetmapposition=(x:number,y:number):void=>{this.setmapposition([x, y]);}
+    public refbuttonfucntion=()=>{this.setmapposition([5,5]);}
+
     public render(){
         const mapcells=this.getmapsquorestable();
 
@@ -57,8 +61,7 @@ class MapView extends React.Component<IViewProps>{
                 {mapcells}
                 </table>
                 <br />
-                <button title="MapViewSetter"  onClick={
-              ()=>{this.setmapposition([5,5]);}}>
+                <button title="MapViewSetter" onClick={this.refbuttonfucntion}>
                 Setposition to {this.props.location[0] + ", " + this.props.location[1]}
                 </button>
                 <br />
@@ -85,7 +88,7 @@ class MapView extends React.Component<IViewProps>{
     private getmapsquorestable():any[]{
         const visibleHeigth=this.props.viewsize[1];
         const viewrows: any[]=new Array();
-        const childstatechange=this.setmapposition;
+        const childstatechange=this.refsetmapposition;
         let mapy=this.state.location[1];
         const mapHeigth=this.props.planemap.length;
         for(let i: number=0;i<visibleHeigth;i++){

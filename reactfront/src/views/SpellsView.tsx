@@ -28,14 +28,15 @@ class SpellsView extends React.Component{
         });
     }
 
+    public refsetmapposition=()=>{this.setmapposition();}
+
     public render(){
 
         return(
             <div className="SpellsView">
                 Spells are
                 <br />
-                <button title="ViewSetter"  onClick={
-              ()=>{this.setmapposition();}}>
+                <button title="ViewSetter"  onClick={this.refsetmapposition}>
                 Setposition to {this.props.location[0] + ", " + this.props.location[1]}
                 </button>
                 <br />
@@ -53,7 +54,7 @@ class SpellsView extends React.Component{
                 initiallocation: oldlocation,
                 location: [5,5]
             }
-          );
+        );
     }
 
 }
