@@ -1,7 +1,21 @@
 import NodeEdge from './algorithms/NodeEdge';
 
-class GameState
-{
+class GameState{
+    public static issigned(){
+        return GameState.isAuthenticated;
+    }
+
+    public static signout(cb: any) {
+        GameState.isAuthenticated = false;
+        setTimeout(cb, 100);
+    }
+
+    public static authenticate(cb: any) {
+        GameState.isAuthenticated = true;
+        setTimeout(cb, 1500); // fake async
+    }
+
+    private static isAuthenticated: boolean=false;
     // Required to be positive
     public mapviewx: number;
     public mapviewy: number;
