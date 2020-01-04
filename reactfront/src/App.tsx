@@ -4,22 +4,28 @@ import { BrowserRouter as Router,
 Link,
 Redirect,
 Route,
-RouteProps } from "react-router-dom";
+RouteComponentProps,
+RouteProps} from "react-router-dom";
 
 import './App.css';
+import GameData from './datahandling/GameData';
 import Game from './Game';
+import GameState from './GameState';
 import GameHistory from './History';
 import AboutView from './views/AboutView';
 import {
   AuthButton,
-  NewLogin
+  LoginRender
 } from './views/NewLogin';
 
 import logo from './umom_logo.svg';
 
+
 class App extends React.Component {
-  public gamecall=() => <Game plane={3}/>;
-  public gamecalldefault=() => <Game/>;
+  public gamecall=(props: RouteComponentProps<any>) => <Game {...props}
+    fromserver={new GameData()} plane={3}/>;
+  public gamecalldefault=() => <Game fromserver={new GameData()} plane={1}/>;
+  public loginviarender=() => <LoginRender/>;
 
   public render() {
 
@@ -56,8 +62,10 @@ class App extends React.Component {
           </div>
           <a href="#">Settings</a>
           <Link to="/aboutview/">AboutView</Link>
-          <Link to="/game">Game</Link>
-          <Link to="/gamezero">Game_default_plane</Link>
+          <Link to="/newlogin">New login</Link>
+          <Link to="/game">Game not working render props routing</Link>
+          <Link to="/gamezero">Game working</Link>
+          <Link to="/">Root link</Link>
           </div>
         </header>
 
@@ -66,55 +74,80 @@ class App extends React.Component {
         </p>
         <AuthButton />
         <GameHistory move="1.1.2018"/>
-        <PrivateRoute path={"/game"} component={this.gamecall}/>
-        <PrivateRoute path={"/gamezero"} component={this.gamecalldefault}/>
+        <PrivateRoute authorized={GameState.issigned()} exact={true}
+          path={"/game"} render={this.gamecall}/>
+        <PrivateRoute authorized={GameState.issigned()} exact={true}
+          path={"/gamezero"} component={this.gamecalldefault}/>
         <Route path="/aboutview/" component={AboutView} />
-        <Route path="/newlogin" component={NewLogin} />
+        <Route exact={true} path="/newlogin" render={this.loginviarender} />
         </Router>
       </div>
     );
   }
 }
 
-
 interface IPrivateRouteProps extends RouteProps {
-  component: any;
+  authorized: boolean;
+  component?: any;
 }
 
 const PrivateRoute = (props: IPrivateRouteProps):JSX.Element => {
-  const { component: Component, ...rest } = props;
-  const returnedrender=(propsa:any)=>(
-    fakeAuth.isAuthenticated ? (
-      <Component {...props} />
-    ) : (
-      <Redirect
+  const { component: Component, render: Render, ...rest } = props;
+  let returnedrendercandidate;
+  const loggedstate=GameState.issigned();
+
+  const loginredirect=(newrenderprops: RouteProps)=>(
+    <Redirect
         to={{
           pathname: "/newlogin",
-          state: { from: propsa.location }
+          state: {
+            from: newrenderprops.location,
+            logged: loggedstate.toString() + " authorized=" + props.authorized.toString()
+            }
         }}
       />
     )
-  )
+
+  if(undefined !== Render){
+    if(loggedstate){
+      returnedrendercandidate=props.render;
+
+    }else{
+      returnedrendercandidate=loginredirect;
+    }
+  }else{
+    returnedrendercandidate=(componentpros: RouteProps)=>(
+      GameState.issigned() ? (
+        <Component {...props} />
+      ) : (<Redirect
+        to={{
+          pathname: "/newlogin",
+          state: {
+            from: componentpros.location,
+            logged: loggedstate.toString() + " authorized=" + props.authorized.toString()
+          }
+        }}
+       />)
+    )
+  }
 
   return (
     <Route
       {...rest}
-      render={returnedrender}
+      render={returnedrendercandidate}
     />
   );
 };
 
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb: any) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb: any) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
 
-export {fakeAuth};
+
+  /*
+<Redirect
+  to={{
+    pathname: "/newlogin",
+    state: { from: componentpros.location }
+  }}
+/>
+*/
+
 export default App;

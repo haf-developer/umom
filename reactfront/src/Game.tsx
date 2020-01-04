@@ -3,11 +3,13 @@ import * as React from 'react';
 import { isNumber } from 'util';
 import {shortestpath} from './algorithms/Graph';
 import LinkedList from './algorithms/LinkedList';
+import GameData from './datahandling/GameData';
 import GameState from './GameState';
 import * as MapSquareData from './MapSquareData';
 import CityView from './views/CityView';
 import MapView from './views/MapView';
 import SpellsView from './views/SpellsView';
+
 
 class Game extends React.Component{
 
@@ -20,6 +22,7 @@ class Game extends React.Component{
   public static gameref: Game;
 
   public static defaultProps = {
+    fromserver: new GameData(),
     plane: 0
   };
 
@@ -27,6 +30,7 @@ class Game extends React.Component{
   private static mapviewx = 0;
 
   public props: {
+    fromserver: GameData;
     plane?: number;
   }
 
@@ -36,16 +40,17 @@ class Game extends React.Component{
 
   private planemap: MapSquareData.MapSquareData[][];
 
-  constructor(plane: number){
-      super(plane);
+  constructor(fromserver:GameData=new GameData(), plane: number){
+      super(fromserver, plane);
       const gamestate = new GameState();
-
+      gamestate.mapwidth = fromserver.mapwidth;
+      gamestate.mapheigth = fromserver.mapheigth;
       this.setState(
       this.state = {
         mapposition: gamestate
       });
       Game.gameref = this;
-      this.generatemap(gamestate.mapwidth, gamestate.mapheigth);
+      this.generatemap();
   }
 
   public refpathaction=()=>{this.pathaction();}
@@ -164,21 +169,8 @@ public render(){
     );
   }
 
-  private generatemap(mapwidth: number, mapheight: number) {
-  this.planemap = new Array<[MapSquareData.MapSquareData]>();
-  for(let ih = 0; ih < mapheight;ih++){
-    const planemaprow = new Array<MapSquareData.MapSquareData>();
-    for(let iw = 0;iw < mapwidth;iw++){
-
-      const terraintypekey = Object.keys(MapSquareData.TerrainTypes)[Math.floor(
-        Math.random() * Object.keys(MapSquareData.TerrainTypes).length )];
-      const newmapdata = new MapSquareData.MapSquareData(
-        MapSquareData.TerrainTypes[terraintypekey]);
-
-      planemaprow.push(newmapdata);
-      }
-    this.planemap.push(planemaprow);
-    }
+  private generatemap() {
+  this.planemap = this.props.fromserver.getMap();
   }
 
 }
