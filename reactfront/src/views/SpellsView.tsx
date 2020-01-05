@@ -49,12 +49,12 @@ class SpellsView extends React.Component{
 
     private setmapposition(){
         const oldlocation=this.state.initiallocation;
-        this.setState(
-            this.state = {
+        this.setState((state)=>{
+            return {
                 initiallocation: oldlocation,
                 location: [5,5]
             }
-        );
+        });
     }
 
 }

@@ -62,29 +62,29 @@ class Game extends React.Component{
   public childstatechange=(x:number, y:number)=> this.movetoPosition(x,y);
 
   public movetoPosition( xlocation: number, ylocation: number){
-  const mapviewstate = this.state.mapposition;
-  const nexxlocation = xlocation - Math.floor(mapviewstate.mapviewwidth/2);
-  const newylocation = ylocation - Math.floor(mapviewstate.mapviewheigth/2);
-  mapviewstate.mapviewx = mapviewstate.mapviewx + nexxlocation;
-  mapviewstate.mapviewy = mapviewstate.mapviewy + newylocation;
-  if(mapviewstate.mapviewx < 0){
-    mapviewstate.mapviewx = mapviewstate.mapviewx + mapviewstate.mapwidth;
-  }else if(mapviewstate.mapviewx >= mapviewstate.mapwidth){
-    mapviewstate.mapviewx = mapviewstate.mapviewx - mapviewstate.mapwidth;
-  }
+    this.setState((state)=>{
+      const mapviewstate = this.state.mapposition;
+      const nexxlocation = xlocation - Math.floor(mapviewstate.mapviewwidth/2);
+      const newylocation = ylocation - Math.floor(mapviewstate.mapviewheigth/2);
+      mapviewstate.mapviewx = mapviewstate.mapviewx + nexxlocation;
+      mapviewstate.mapviewy = mapviewstate.mapviewy + newylocation;
+      if(mapviewstate.mapviewx < 0){
+        mapviewstate.mapviewx = mapviewstate.mapviewx + mapviewstate.mapwidth;
+      }else if(mapviewstate.mapviewx >= mapviewstate.mapwidth){
+        mapviewstate.mapviewx = mapviewstate.mapviewx - mapviewstate.mapwidth;
+      }
 
-  if(mapviewstate.mapviewy < 0){
-    mapviewstate.mapviewy = mapviewstate.mapviewy + mapviewstate.mapheigth;
-  }else if(mapviewstate.mapviewy >= mapviewstate.mapheigth){
-    mapviewstate.mapviewy = mapviewstate.mapviewy - mapviewstate.mapheigth;
-  }
+      if(mapviewstate.mapviewy < 0){
+        mapviewstate.mapviewy = mapviewstate.mapviewy + mapviewstate.mapheigth;
+      }else if(mapviewstate.mapviewy >= mapviewstate.mapheigth){
+        mapviewstate.mapviewy = mapviewstate.mapviewy - mapviewstate.mapheigth;
+      }
 
-  this.setState(
-    this.state = {
-      mapposition: mapviewstate,
-    }
-  );
-}
+      return {
+        mapposition: mapviewstate,
+      }
+    });
+  }
 
 public render(){
     Game.mapviewx = this.state.mapposition.mapviewx;
@@ -162,10 +162,11 @@ public render(){
         }
       }
     }
-    this.setState(
-      this.state = {
+    this.setState((state)=>{
+      return {
         mapposition: mapviewstate,
       }
+    }
     );
   }
 

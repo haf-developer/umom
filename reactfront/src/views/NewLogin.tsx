@@ -28,26 +28,28 @@ const AuthButton = withRouter(({ history }) => {
   )
 });
 
-// class NewLogin extends React.Component{
 class NewLogin extends React.Component<RouteComponentProps>{
-    public static location: any;
-    public state = {
-      redirectToReferrer: false,
-      timesMounted: 0
-    };
+  public static location: any;
+  public state = {
+    redirectToReferrer: false,
+    timesMounted: 0
+  };
 
-    public componentDidMount() {
-      let mountcounter=this.state.timesMounted;
-      mountcounter++;
-      this.setState({ timesMounted: mountcounter }
-      );
-    }
+  public componentDidMount() {
+    this.setState((state)=>{
+      return{
+        timesMounted: +1 }
+      }
+    );
+  }
 
   public login = () => {
     GameState.authenticate(() => {
-      this.setState({ redirectToReferrer: true
+      this.setState((state)=>{
+        return{
+          redirectToReferrer: true
            }
-        );
+        });
     });
   };
 

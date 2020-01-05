@@ -76,12 +76,12 @@ class MapView extends React.Component<IViewProps>{
 
     public setmapposition=(newlocation: number[])=>{
         const oldlocation=this.state.initiallocation;
-        this.setState(
-            this.state = {
+        this.setState((state)=>{
+            return {
                 initiallocation: oldlocation,
                 location: [newlocation[0],newlocation[1]]
             }
-        );
+        });
         this.props.reportlocation(newlocation[0],newlocation[1]);
     }
 

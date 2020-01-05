@@ -139,15 +139,4 @@ const PrivateRoute = (props: IPrivateRouteProps):JSX.Element => {
   );
 };
 
-
-
-  /*
-<Redirect
-  to={{
-    pathname: "/newlogin",
-    state: { from: componentpros.location }
-  }}
-/>
-*/
-
 export default App;
