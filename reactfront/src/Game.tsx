@@ -41,21 +41,16 @@ class Game extends React.Component{
   private planemap: MapSquareData.MapSquareData[][];
 
   constructor(fromserver:GameData=new GameData(), plane: number){
-      super(fromserver, plane);
-      const gamestate = new GameState();
-      gamestate.mapwidth = fromserver.mapwidth;
-      gamestate.mapheigth = fromserver.mapheigth;
-      if(gamestate.mapwidth===undefined){
-        gamestate.mapwidth=gamestate.mapheigth=20;
-      }
-
-      this.setState(
-      this.state = {
-        mapposition: gamestate
-      });
-      // alert("ms1x=" + this.state.mapposition.mapwidth + " ms1y=" + this.state.mapposition.mapheigth );
-      Game.gameref = this;
-      this.generatemap();
+    super(fromserver, plane);
+    const gamestate = new GameState();
+    gamestate.mapwidth = this.props.fromserver.mapwidth;
+    gamestate.mapheigth = this.props.fromserver.mapheigth;
+    this.setState(
+    this.state = {
+      mapposition: gamestate
+    });
+    Game.gameref = this;
+    this.planemap = this.props.fromserver.getMap();
   }
 
   public refpathaction=()=>{this.pathaction();}
@@ -172,10 +167,6 @@ public render(){
       }
     }
     );
-  }
-
-  private generatemap() {
-  this.planemap = this.props.fromserver.getMap();
   }
 
 }
