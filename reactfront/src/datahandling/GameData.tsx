@@ -5,15 +5,12 @@ import{
 
 class GameData{
   // Required to be positive
-  public planes: number;
-  public mapwidth: number;
-  public mapheigth: number;
+  public planes: number=1;
+  public mapwidth: number=20;
+  public mapheigth: number=20;
   private planemap: MapSquareData[][];
 
   constructor(){
-    this.planes=1;
-    this.mapwidth=20;
-    this.mapheigth=20;
     this.generatemap(this.mapwidth, this.mapheigth);
   }
 
