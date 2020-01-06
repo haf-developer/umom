@@ -45,10 +45,15 @@ class Game extends React.Component{
       const gamestate = new GameState();
       gamestate.mapwidth = fromserver.mapwidth;
       gamestate.mapheigth = fromserver.mapheigth;
+      if(gamestate.mapwidth===undefined){
+        gamestate.mapwidth=gamestate.mapheigth=20;
+      }
+
       this.setState(
       this.state = {
         mapposition: gamestate
       });
+      // alert("ms1x=" + this.state.mapposition.mapwidth + " ms1y=" + this.state.mapposition.mapheigth );
       Game.gameref = this;
       this.generatemap();
   }
@@ -64,9 +69,9 @@ class Game extends React.Component{
   public movetoPosition( xlocation: number, ylocation: number){
     this.setState((state)=>{
       const mapviewstate = this.state.mapposition;
-      const nexxlocation = xlocation - Math.floor(mapviewstate.mapviewwidth/2);
+      const newxlocation = xlocation - Math.floor(mapviewstate.mapviewwidth/2);
       const newylocation = ylocation - Math.floor(mapviewstate.mapviewheigth/2);
-      mapviewstate.mapviewx = mapviewstate.mapviewx + nexxlocation;
+      mapviewstate.mapviewx = mapviewstate.mapviewx + newxlocation;
       mapviewstate.mapviewy = mapviewstate.mapviewy + newylocation;
       if(mapviewstate.mapviewx < 0){
         mapviewstate.mapviewx = mapviewstate.mapviewx + mapviewstate.mapwidth;
@@ -79,9 +84,8 @@ class Game extends React.Component{
       }else if(mapviewstate.mapviewy >= mapviewstate.mapheigth){
         mapviewstate.mapviewy = mapviewstate.mapviewy - mapviewstate.mapheigth;
       }
-
       return {
-        mapposition: mapviewstate,
+        mapposition: mapviewstate
       }
     });
   }
