@@ -20,19 +20,14 @@ class GameData{
 
   private generatemap(mapwidth: number, mapheight: number) {
   // alert("gd1x=" + this.mapwidth + " gd1y=" + this.mapheigth );
-
-    this.planemap = new Array<[MapSquareData]>();
-    for(let ih = 0; ih < mapheight;ih++){
-      const planemaprow = new Array<MapSquareData>();
-      for(let iw = 0;iw < mapwidth;iw++){
-        const terraintypekey = Object.keys(TerrainTypes)[Math.floor(
-          Math.random() * Object.keys(TerrainTypes).length )];
-        const newmapdata = new MapSquareData(
-          TerrainTypes[terraintypekey]);
-        planemaprow.push(newmapdata);
-      }
-      this.planemap.push(planemaprow);
-    }
+    this.planemap=Array(mapheight).fill([MapSquareData]).map(()=>{
+      return(
+        Array(mapwidth).fill(Object.keys(TerrainTypes).length).map((data)=>
+        data=new MapSquareData(
+          TerrainTypes[Object.keys(TerrainTypes)[Math.floor(Math.random() * data )]])
+        )
+      );}
+    );
   }
 }
 
