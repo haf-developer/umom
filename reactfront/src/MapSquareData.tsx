@@ -6,7 +6,6 @@ class MapSquareData implements IWeightData
     public basepicture: string;
     public basemodifiers: any[];
     public activatedmodifiers: any[];
-
     private movecost: number;
 
     constructor(landtype: string){
