@@ -154,8 +154,8 @@
 }
 
 .Map-view {
+  margin: 0px auto;
   table-layout: auto;
-  transform: translateX(50%);
   object-position: center;
   padding: 10px;
   border-collapse: collapse;

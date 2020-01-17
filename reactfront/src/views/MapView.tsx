@@ -57,7 +57,7 @@ class MapView extends React.Component<IViewProps>{
         return(
             <div style={{textAlign: 'center', backgroundColor: 'blue', borderStyle: 'solid'}}
              className="MapView">
-                <table style={{marginLeft: '5%', alignSelf: 'right'}} className="Map-view">
+                <table className="Map-view">
                 {mapcells}
                 </table>
                 <br />
