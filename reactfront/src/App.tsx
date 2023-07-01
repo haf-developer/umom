@@ -20,6 +20,19 @@ import {
 
 import logo from './umom_logo.svg';
 
+/*
+CDN - Content Delivery Network
+
+https://superuser.com/questions/1449554/how-do-i-remove-localhost-from-proxy-exceptions-in-firefox
+
+You have to change an additional setting in addition to removing localhost and 127.0.0.1 from
+the No Proxy For box. Set network.proxy.allow_hijacking_localhost to true in about:config
+
+https://medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274
+
+https://www.freecodecamp.org/news/create-a-react-frontend-a-node-express-backend-and-connect-them-together-c5798926047c/
+*/
+
 
 class App extends React.Component {
   public gamecall=(props: RouteComponentProps<any>) => <Game {...props}
